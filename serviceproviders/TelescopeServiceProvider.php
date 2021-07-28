@@ -69,19 +69,12 @@ final class TelescopeServiceProvider extends TelescopeServiceProviderBase
 
     /**
      * Register the package's publishable resources.
-     *
-     * @return void
      */
-    private function registerPublishing()
+    private function registerPublishing(): void
     {
         if (!$this->app->runningInConsole()) {
             return;
         }
-
-        // TODO:
-//        $this->publishes([
-//            __DIR__.'/Storage/migrations' => database_path('migrations'),
-//        ], 'telescope-migrations');
 
         $this->publishes([
             base_path('vendor/laravel/telescope/public') => $this->getAssetPath(),
