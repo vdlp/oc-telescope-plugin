@@ -37,6 +37,10 @@ Run database migrations (when using database driver = default):
 php artisan migrate
 ```
 
+## Environment
+
+Make sure your environment is set to `local`.
+
 ## Configuration
 
 Create configuration file in `config/telescope.php`:
