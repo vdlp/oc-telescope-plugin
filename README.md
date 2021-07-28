@@ -45,6 +45,11 @@ Create configuration file in `config/telescope.php`:
 php artisan vendor:publish --tag telescope-config
 ```
 
+## Permissions
+
+- Users must have the proper permissions to access the Telescope Dashboard.
+- If backend user is not logged in, access to the Telescope Dashboard will not be granted.
+
 ## Switching themes
 
 > Each time you switch the default theme you need to re-publish the Telescope assets.

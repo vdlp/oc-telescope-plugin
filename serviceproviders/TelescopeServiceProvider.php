@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Vdlp\Telescope\ServiceProviders;
 
+use Backend\Classes\AuthManager;
+use Backend\Models\User;
 use Cms\Classes\Theme;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
@@ -22,6 +24,8 @@ final class TelescopeServiceProvider extends TelescopeServiceProviderBase
             return;
         }
 
+        $this->authorization();
+
         Route::middlewareGroup('telescope', config('telescope.middleware', []));
 
         $this->registerRoutes();
@@ -32,6 +36,24 @@ final class TelescopeServiceProvider extends TelescopeServiceProviderBase
         Telescope::listenForStorageOpportunities($this->app);
 
         $this->loadViewsFrom(plugins_path('vdlp/telescope/views'), 'telescope');
+    }
+
+    /**
+     * Configure the Telescope authorization services.
+     */
+    private function authorization(): void
+    {
+        Telescope::auth(static function (): bool {
+            /** @var ?User $user */
+            $user = AuthManager::instance()->getUser();
+
+            if ($user === null) {
+                return false;
+            }
+
+            return $user->hasPermission('vdlp.telescope.access_dashboard')
+                || $user->isSuperUser();
+        });
     }
 
     /**
@@ -93,7 +115,6 @@ final class TelescopeServiceProvider extends TelescopeServiceProviderBase
 
         $this->commands([
             ClearCommand::class,
-            // InstallCommand::class,
             PruneCommand::class,
             PublishCommand::class,
         ]);
@@ -134,21 +155,8 @@ final class TelescopeServiceProvider extends TelescopeServiceProviderBase
     }
 
     /**
-     * Register the Telescope gate.
-     *
-     * This gate determines who can access Telescope in non-local environments.
+     * Get the asset path for the current active October CMS theme.
      */
-    private function gate(): void
-    {
-        Gate::define('viewTelescope', function ($user): bool {
-            return true; // TODO: Access to backend user.
-
-//            return in_array($user->email, [
-//                //
-//            ]);
-        });
-    }
-
     private function getAssetPath(): string
     {
         /** @var Theme $theme */
