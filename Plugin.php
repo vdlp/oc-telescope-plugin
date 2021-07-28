@@ -35,7 +35,7 @@ final class Plugin extends PluginBase
 
     public function register(): void
     {
-        if (!in_array($this->app->environment(), ['local', 'dev'], true)) {
+        if ($this->app->environment('local') === false) {
             return;
         }
 
