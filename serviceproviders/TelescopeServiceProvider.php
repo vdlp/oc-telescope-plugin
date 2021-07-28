@@ -62,12 +62,12 @@ final class TelescopeServiceProvider extends TelescopeServiceProviderBase
     {
         Route::group($this->routeConfiguration(), function (): void {
             $this->loadRoutesFrom(base_path('vendor/laravel/telescope/src/Http/routes.php'));
-        });
 
-        // Override HomeController@index
-        Route::get('/{view?}', 'Vdlp\Telescope\Controllers\HomeController@index')
-            ->where('view', '(.*)')
-            ->name('telescope');
+            // Override HomeController@index
+            Route::get('/{view?}', '\Vdlp\Telescope\Controllers\HomeController@index')
+                ->where('view', '(.*)')
+                ->name('telescope');
+        });
     }
 
     /**
