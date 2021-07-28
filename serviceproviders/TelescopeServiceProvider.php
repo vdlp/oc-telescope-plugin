@@ -7,7 +7,6 @@ namespace Vdlp\Telescope\ServiceProviders;
 use Backend\Classes\AuthManager;
 use Backend\Models\User;
 use Cms\Classes\Theme;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 use Laravel\Telescope\Console\ClearCommand;
 use Laravel\Telescope\Console\PruneCommand;
@@ -64,6 +63,11 @@ final class TelescopeServiceProvider extends TelescopeServiceProviderBase
         Route::group($this->routeConfiguration(), function (): void {
             $this->loadRoutesFrom(base_path('vendor/laravel/telescope/src/Http/routes.php'));
         });
+
+        // Override HomeController@index
+        Route::get('/{view?}', 'Vdlp\Telescope\Controllers\HomeController@index')
+            ->where('view', '(.*)')
+            ->name('telescope');
     }
 
     /**
@@ -159,7 +163,7 @@ final class TelescopeServiceProvider extends TelescopeServiceProviderBase
      */
     private function getAssetPath(): string
     {
-        /** @var ?Theme $theme */
+        /** @var Theme $theme */
         $theme = Theme::getActiveTheme();
 
         if ($theme === null) {
