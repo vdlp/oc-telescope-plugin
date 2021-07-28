@@ -1,0 +1,26 @@
+{
+    "name": "vdlp/oc-telescope-plugin",
+    "description": "Laravel Telescope integration for October CMS",
+    "type": "october-plugin",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Van der Let & Partners",
+            "email": "octobercms@vdlp.nl"
+        }
+    ],
+    "require": {
+        "php": "^7.4 || ^8.0",
+        "composer/installers": "^1.0",
+        "laravel/telescope": "^3.5"
+    },
+    "archive": {
+        "exclude": [
+            ".editorconfig",
+            ".gitattributes",
+            ".gitignore",
+            ".gitlab-ci.yml",
+            ".idea/"
+        ]
+    }
+}
