@@ -159,7 +159,7 @@ final class TelescopeServiceProvider extends TelescopeServiceProviderBase
      */
     private function getAssetPath(): string
     {
-        /** @var Theme $theme */
+        /** @var ?Theme $theme */
         $theme = Theme::getActiveTheme();
 
         if ($theme === null) {
