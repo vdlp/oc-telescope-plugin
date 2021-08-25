@@ -1,3 +1,4 @@
 1.0.0: "First version of Vdlp.Telescope"
 1.0.1: "Override Telescope HomeController to fix publish check"
 1.0.2: "Fix route registration"
+1.0.3: "Fix mismatching PHP constraint with laravel/telescope"
