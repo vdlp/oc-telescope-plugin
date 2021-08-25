@@ -9,7 +9,7 @@ Laravel Telescope is an elegant debug assistant for the Laravel framework. Teles
 ## Requirements
 
 - October CMS 1.0
-- PHP 7.4 or higher
+- PHP 7.2 or higher
 
 ## Installation
 
