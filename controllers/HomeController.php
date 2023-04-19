@@ -17,7 +17,7 @@ final class HomeController extends Controller
      */
     public function index()
     {
-        return view('telescope::layout', [
+        return view('vdlp.telescope::layout', [
             'cssFile' => Telescope::$useDarkTheme ? 'app-dark.css' : 'app.css',
             'telescopeScriptVariables' => Telescope::scriptVariables(),
             'assetsAreCurrent' => $this->assetsAreCurrent(),

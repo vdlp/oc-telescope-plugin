@@ -4,21 +4,24 @@ declare(strict_types=1);
 
 namespace Vdlp\Telescope\ServiceProviders;
 
+use ApplicationException;
 use Backend\Classes\AuthManager;
 use Backend\Models\User;
 use Cms\Classes\Theme;
 use Illuminate\Support\Facades\Route;
-use Laravel\Telescope\Console\ClearCommand;
-use Laravel\Telescope\Console\PruneCommand;
-use Laravel\Telescope\Console\PublishCommand;
-use Laravel\Telescope\IncomingEntry;
 use Laravel\Telescope\Telescope;
 use Laravel\Telescope\TelescopeServiceProvider as TelescopeServiceProviderBase;
 
 final class TelescopeServiceProvider extends TelescopeServiceProviderBase
 {
+    /**
+     * Bootstrap any package services.
+     */
     public function boot(): void
     {
+        $this->registerCommands();
+        $this->registerPublishing();
+
         if (config('telescope.enabled') === false) {
             return;
         }
@@ -29,30 +32,12 @@ final class TelescopeServiceProvider extends TelescopeServiceProviderBase
 
         $this->registerRoutes();
         $this->registerMigrations();
-        $this->registerPublishing();
 
+        Telescope::night();
         Telescope::start($this->app);
         Telescope::listenForStorageOpportunities($this->app);
 
         $this->loadViewsFrom(plugins_path('vdlp/telescope/views'), 'telescope');
-    }
-
-    /**
-     * Configure the Telescope authorization services.
-     */
-    private function authorization(): void
-    {
-        Telescope::auth(static function (): bool {
-            /** @var ?User $user */
-            $user = AuthManager::instance()->getUser();
-
-            if ($user === null) {
-                return false;
-            }
-
-            return $user->hasPermission('vdlp.telescope.access_dashboard')
-                || $user->isSuperUser();
-        });
     }
 
     /**
@@ -72,11 +57,13 @@ final class TelescopeServiceProvider extends TelescopeServiceProviderBase
 
     /**
      * Get the Telescope route group configuration array.
+     *
+     * @return array
      */
     private function routeConfiguration(): array
     {
         return [
-            'domain' => config('telescope.domain', null),
+            'domain' => config('telescope.domain'),
             'namespace' => 'Laravel\Telescope\Http\Controllers',
             'prefix' => config('telescope.path'),
             'middleware' => 'telescope',
@@ -116,54 +103,16 @@ final class TelescopeServiceProvider extends TelescopeServiceProviderBase
         $this->mergeConfigFrom(base_path('vendor/laravel/telescope/config/telescope.php'), 'telescope');
 
         $this->registerStorageDriver();
-
-        $this->commands([
-            ClearCommand::class,
-            PruneCommand::class,
-            PublishCommand::class,
-        ]);
-
-        Telescope::night();
-
-        $this->hideSensitiveRequestDetails();
-
-        Telescope::filter(function (IncomingEntry $entry): bool {
-            if ($this->app->environment('local') === true) {
-                return true;
-            }
-
-            return $entry->isReportableException() ||
-                $entry->isFailedRequest() ||
-                $entry->isFailedJob() ||
-                $entry->isScheduledTask() ||
-                $entry->hasMonitoredTag();
-        });
-    }
-
-    /**
-     * Prevent sensitive request details from being logged by Telescope.
-     */
-    private function hideSensitiveRequestDetails(): void
-    {
-        if ($this->app->environment('local') === true) {
-            return;
-        }
-
-        Telescope::hideRequestParameters(['_token']);
-
-        Telescope::hideRequestHeaders([
-            'cookie',
-            'x-csrf-token',
-            'x-xsrf-token',
-        ]);
     }
 
     /**
      * Get the asset path for the current active October CMS theme.
+     *
+     * @throws ApplicationException
      */
     private function getAssetPath(): string
     {
-        /** @var Theme $theme */
+        /** @var ?Theme $theme */
         $theme = Theme::getActiveTheme();
 
         if ($theme === null) {
@@ -175,5 +124,23 @@ final class TelescopeServiceProvider extends TelescopeServiceProviderBase
             'assets',
             'telescope',
         ]));
+    }
+
+    /**
+     * Configure the Telescope authorization services.
+     */
+    private function authorization(): void
+    {
+        Telescope::auth(static function (): bool {
+            /** @var ?User $user */
+            $user = AuthManager::instance()->getUser();
+
+            if ($user === null) {
+                return false;
+            }
+
+            return $user->hasPermission('vdlp.telescope.access_dashboard')
+                || $user->isSuperUser();
+        });
     }
 }
