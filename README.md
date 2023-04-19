@@ -1,6 +1,6 @@
 # Vdlp.Telescope
 
-Provides a seamless integration of [Laravel Telescope 3.0](https://laravel.com/docs/6.x/telescope) inside October CMS.
+Provides a seamless integration of [Laravel Telescope 4.0](https://laravel.com/docs/9.x/telescope) inside October CMS.
 
 Laravel Telescope is an elegant debug assistant for the Laravel framework. Telescope provides insight into the requests coming into your application, exceptions, log entries, database queries, queued jobs, mail, notifications, cache operations, scheduled tasks, variable dumps and more. Telescope makes a wonderful companion to your local Laravel development environment.
 
@@ -8,14 +8,14 @@ Laravel Telescope is an elegant debug assistant for the Laravel framework. Teles
 
 ## Requirements
 
-- October CMS 1.0
-- PHP 7.2 or higher
+- October CMS 3.2 or higher
+- PHP 8.0.2 or higher
 
 ## Installation
 
 Install the plugin using composer:
 
-```
+```shell
 composer require vdlp/oc-telescope-plugin --dev
 ```
 
@@ -25,7 +25,7 @@ If you plan to use the Telescope plugin on other than your local development env
 
 Make sure you have an active theme before publishing the required assets:
 
-```
+```shell
 php artisan vendor:publish --tag telescope-assets --force
 ```
 
@@ -33,7 +33,8 @@ php artisan vendor:publish --tag telescope-assets --force
 
 Run database migrations (when using database driver = default):
 
-```
+```shell
+php artisan october:migrate
 php artisan migrate
 ```
 
@@ -45,7 +46,7 @@ Make sure your environment is set to `local`.
 
 Create configuration file in `config/telescope.php`:
 
-```
+```shell
 php artisan vendor:publish --tag telescope-config
 ```
 
@@ -64,7 +65,7 @@ The assets will be stored in your current theme folder: `themes/mytheme/assets/t
 
 Please go to the Laravel website for detailed documentation about Laravel Telescope.
 
-[Telescope for Laravel 6.x](https://laravel.com/docs/6.x/telescope)
+[Telescope for Laravel 9.x](https://laravel.com/docs/9.x/telescope)
 
 ## Questions
 

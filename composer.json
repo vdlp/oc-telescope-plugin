@@ -10,15 +10,28 @@
         }
     ],
     "require": {
-        "php": "^7.2",
-        "composer/installers": "^1.0",
-        "laravel/telescope": "^3.5"
+        "php": "^8.0.2",
+        "october/rain": "^3.2",
+        "composer/installers": "^1.0 || ^2.0",
+        "laravel/telescope": "^4.0"
     },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://gateway.octobercms.com"
+        }
+    ],
+    "minimum-stability": "stable",
     "archive": {
         "exclude": [
+            ".gitattributes",
             ".github",
-            ".gitignore",
-            ".idea/"
+            ".gitignore"
         ]
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/installers": true
+        }
     }
 }
