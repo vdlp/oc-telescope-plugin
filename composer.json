@@ -26,8 +26,12 @@
         "exclude": [
             ".gitattributes",
             ".github",
-            ".gitignore",
-            ".idea/"
+            ".gitignore"
         ]
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/installers": true
+        }
     }
 }
