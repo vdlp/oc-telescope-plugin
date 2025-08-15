@@ -21,15 +21,27 @@ composer require vdlp/oc-telescope-plugin --dev
 
 If you plan to use the Telescope plugin on other than your local development environment, you may install the plugin **without** the `--dev` flag.
 
+### Composer.json
+
+Make sure that you're not autodiscovering the `laravel/telescope` package in your `composer.json` file. 
+
+```json
+"extra": {
+    "laravel": {
+        "dont-discover": [
+            "laravel/telescope"
+        ]
+    }
+}
+```
+    
 ### Database
 
 Run database migrations (when using database driver = default):
 
-
 ```shell
 php artisan vendor:publish --tag telescope-migrations
 ```
-
 
 ```shell
 php artisan october:migrate
