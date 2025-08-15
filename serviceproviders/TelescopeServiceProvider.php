@@ -12,6 +12,7 @@ use Cms\Classes\Theme;
 use Illuminate\Support\Facades\Route;
 use Laravel\Telescope\Telescope;
 use Laravel\Telescope\TelescopeServiceProvider as TelescopeServiceProviderBase;
+use Vdlp\Telescope\Controllers\HomeController;
 
 final class TelescopeServiceProvider extends TelescopeServiceProviderBase
 {
@@ -53,7 +54,7 @@ final class TelescopeServiceProvider extends TelescopeServiceProviderBase
             $this->loadRoutesFrom(base_path('vendor/laravel/telescope/routes/web.php'));
 
             // Override HomeController@index
-            Route::get('/{view?}', '\Vdlp\Telescope\Controllers\HomeController@index')
+            Route::get('/{view?}', [HomeController::class, 'index'])
                 ->where('view', '(.*)')
                 ->name('telescope');
         });
