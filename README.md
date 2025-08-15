@@ -21,17 +21,15 @@ composer require vdlp/oc-telescope-plugin --dev
 
 If you plan to use the Telescope plugin on other than your local development environment, you may install the plugin **without** the `--dev` flag.
 
-### Assets
-
-Make sure you have an active theme before publishing the required assets:
-
-```shell
-php artisan vendor:publish --tag telescope-assets --force
-```
-
 ### Database
 
 Run database migrations (when using database driver = default):
+
+
+```shell
+php artisan vendor:publish --tag telescope-migrations
+```
+
 
 ```shell
 php artisan october:migrate
