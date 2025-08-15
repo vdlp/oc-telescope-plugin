@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace Vdlp\Telescope\ServiceProviders;
 
-use ApplicationException;
 use Backend\Classes\AuthManager;
 use Backend\Models\BrandSetting;
 use Backend\Models\User;
-use Cms\Classes\Theme;
 use Illuminate\Support\Facades\Route;
 use Laravel\Telescope\Telescope;
 use Laravel\Telescope\TelescopeServiceProvider as TelescopeServiceProviderBase;
@@ -62,8 +60,6 @@ final class TelescopeServiceProvider extends TelescopeServiceProviderBase
 
     /**
      * Get the Telescope route group configuration array.
-     *
-     * @return array
      */
     private function routeConfiguration(): array
     {

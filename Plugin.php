@@ -8,7 +8,6 @@ use Backend\Helpers\Backend;
 use Illuminate\Auth\Access\Gate;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Illuminate\Foundation\Application;
-use Laravel\Telescope\TelescopeServiceProvider as TelescopeServiceProviderBase;
 use System\Classes\PluginBase;
 use Vdlp\Telescope\ServiceProviders\TelescopeServiceProvider;
 
@@ -42,9 +41,7 @@ final class Plugin extends PluginBase
 
         $this->registerAccessGate();
 
-        $this->app->bind(TelescopeServiceProviderBase::class, static function (Application $app) {
-            return new TelescopeServiceProvider($app);
-        });
+        $this->app->register(TelescopeServiceProvider::class);
     }
 
     public function registerPermissions(): array
