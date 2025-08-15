@@ -27,7 +27,7 @@
            :confirmation-cancel="alert.confirmationCancel"
            v-if="alert.type"></alert>
 
-    <div class="container mb-5">
+    <div class="container-fluid mb-5">
         <div class="d-flex align-items-stretch py-4 header">
             <router-link to="/" class="logo d-flex align-items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">
