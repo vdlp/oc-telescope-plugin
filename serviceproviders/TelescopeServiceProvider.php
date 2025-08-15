@@ -43,7 +43,7 @@ final class TelescopeServiceProvider extends TelescopeServiceProviderBase
     /**
      * Register the package routes.
      */
-    private function registerRoutes(): void
+    protected function registerRoutes(): void
     {
         Route::group($this->routeConfiguration(), function (): void {
             $this->loadRoutesFrom(base_path('vendor/laravel/telescope/src/Http/routes.php'));
@@ -83,7 +83,7 @@ final class TelescopeServiceProvider extends TelescopeServiceProviderBase
     /**
      * Register the package's publishable resources.
      */
-    private function registerPublishing(): void
+    protected function registerPublishing(): void
     {
         if (!$this->app->runningInConsole()) {
             return;
