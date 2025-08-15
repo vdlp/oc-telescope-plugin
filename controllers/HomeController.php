@@ -6,8 +6,6 @@ namespace Vdlp\Telescope\Controllers;
 
 use Backend\Models\BrandSetting;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\File;
-use Laravel\Telescope\Telescope;
 use RuntimeException;
 
 final class HomeController extends Controller
