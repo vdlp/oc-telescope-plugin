@@ -7,7 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased] -
 
 ### Added
-- Add support for OctoberCMS 4.x (Laravel 12)
+- Add support for OctoberCMS 4.x
+  - PHP 8.2.0 or higher
+  - Laravel 12
+  - Telescope 5 
+- Drop support for OctoberCMS 3.x
+  - Laravel 9
+  - Telescope 4
+
+### Fixed
+- Use CSS based on BrandSettings
+
+### Removed
+- Remove asset publishing
 
 ## [2.0.0] - 2023-04-19
 
