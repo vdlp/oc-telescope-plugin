@@ -6,6 +6,7 @@ namespace Vdlp\Telescope\ServiceProviders;
 
 use ApplicationException;
 use Backend\Classes\AuthManager;
+use Backend\Models\BrandSetting;
 use Backend\Models\User;
 use Cms\Classes\Theme;
 use Illuminate\Support\Facades\Route;
@@ -33,7 +34,10 @@ final class TelescopeServiceProvider extends TelescopeServiceProviderBase
         $this->registerRoutes();
         $this->registerResources();
 
-        Telescope::night();
+        if (BrandSetting::getColorMode() === BrandSetting::COLOR_DARK) {
+            Telescope::night();
+        }
+
         Telescope::start($this->app);
         Telescope::listenForStorageOpportunities($this->app);
 
