@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Vdlp\Telescope\ServiceProviders;
 
-use ApplicationException;
 use Backend\Classes\AuthManager;
+use Backend\Models\BrandSetting;
 use Backend\Models\User;
-use Cms\Classes\Theme;
 use Illuminate\Support\Facades\Route;
 use Laravel\Telescope\Telescope;
 use Laravel\Telescope\TelescopeServiceProvider as TelescopeServiceProviderBase;
+use Vdlp\Telescope\Controllers\HomeController;
 
 final class TelescopeServiceProvider extends TelescopeServiceProviderBase
 {
@@ -31,9 +31,12 @@ final class TelescopeServiceProvider extends TelescopeServiceProviderBase
         Route::middlewareGroup('telescope', config('telescope.middleware', []));
 
         $this->registerRoutes();
-        $this->registerMigrations();
+        $this->registerResources();
 
-        Telescope::night();
+        if (BrandSetting::getColorMode() === BrandSetting::COLOR_DARK) {
+            Telescope::night();
+        }
+
         Telescope::start($this->app);
         Telescope::listenForStorageOpportunities($this->app);
 
@@ -43,13 +46,13 @@ final class TelescopeServiceProvider extends TelescopeServiceProviderBase
     /**
      * Register the package routes.
      */
-    private function registerRoutes(): void
+    protected function registerRoutes(): void
     {
         Route::group($this->routeConfiguration(), function (): void {
-            $this->loadRoutesFrom(base_path('vendor/laravel/telescope/src/Http/routes.php'));
+            $this->loadRoutesFrom(base_path('vendor/laravel/telescope/routes/web.php'));
 
             // Override HomeController@index
-            Route::get('/{view?}', '\Vdlp\Telescope\Controllers\HomeController@index')
+            Route::get('/{view?}', [HomeController::class, 'index'])
                 ->where('view', '(.*)')
                 ->name('telescope');
         });
@@ -57,8 +60,6 @@ final class TelescopeServiceProvider extends TelescopeServiceProviderBase
 
     /**
      * Get the Telescope route group configuration array.
-     *
-     * @return array
      */
     private function routeConfiguration(): array
     {
@@ -71,27 +72,29 @@ final class TelescopeServiceProvider extends TelescopeServiceProviderBase
     }
 
     /**
-     * Register the package's migrations.
+     * Register the Telescope resources.
      */
-    private function registerMigrations(): void
+    protected function registerResources(): void
     {
-        if ($this->app->runningInConsole() && $this->shouldMigrate()) {
-            $this->loadMigrationsFrom(base_path('vendor/laravel/telescope/src/Storage/migrations'));
-        }
+        $this->loadViewsFrom(base_path('vendor/laravel/telescope/resources/views'), 'telescope');
     }
 
     /**
      * Register the package's publishable resources.
      */
-    private function registerPublishing(): void
+    protected function registerPublishing(): void
     {
         if (!$this->app->runningInConsole()) {
             return;
         }
 
-        $this->publishes([
-            base_path('vendor/laravel/telescope/public') => $this->getAssetPath(),
-        ], 'telescope-assets');
+        $publishesMigrationsMethod = method_exists($this, 'publishesMigrations')
+            ? 'publishesMigrations'
+            : 'publishes';
+
+        $this->{$publishesMigrationsMethod}([
+            base_path('vendor/laravel/telescope/database/migrations') => database_path('migrations'),
+        ], 'telescope-migrations');
 
         $this->publishes([
             base_path('vendor/laravel/telescope/config/telescope.php') => config_path('telescope.php'),
@@ -103,27 +106,6 @@ final class TelescopeServiceProvider extends TelescopeServiceProviderBase
         $this->mergeConfigFrom(base_path('vendor/laravel/telescope/config/telescope.php'), 'telescope');
 
         $this->registerStorageDriver();
-    }
-
-    /**
-     * Get the asset path for the current active October CMS theme.
-     *
-     * @throws ApplicationException
-     */
-    private function getAssetPath(): string
-    {
-        /** @var ?Theme $theme */
-        $theme = Theme::getActiveTheme();
-
-        if ($theme === null) {
-            return '';
-        }
-
-        return $theme->getPath(implode(DIRECTORY_SEPARATOR, [
-            $theme->getDirName(),
-            'assets',
-            'telescope',
-        ]));
     }
 
     /**
