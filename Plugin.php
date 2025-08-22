@@ -9,6 +9,7 @@ use Illuminate\Auth\Access\Gate;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Illuminate\Foundation\Application;
 use System\Classes\PluginBase;
+use Vdlp\Telescope\Console\InstallCommand;
 use Vdlp\Telescope\ServiceProviders\TelescopeServiceProvider;
 
 final class Plugin extends PluginBase
@@ -20,6 +21,11 @@ final class Plugin extends PluginBase
         parent::__construct($app);
 
         $this->backend = $app->make(Backend::class);
+    }
+
+    public function boot(): void
+    {
+        $this->registerConsoleCommand(InstallCommand::class, InstallCommand::class);
     }
 
     public function pluginDetails(): array
