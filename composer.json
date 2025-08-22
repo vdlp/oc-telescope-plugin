@@ -10,10 +10,10 @@
         }
     ],
     "require": {
-        "php": "^8.0.2",
+        "php": "^8.2.0",
         "composer/installers": "^1.0 || ^2.0",
-        "laravel/telescope": "^4.0",
-        "october/rain": "^3.2"
+        "laravel/telescope": "^5.0",
+        "october/rain": "^4.0"
     },
     "require-dev": {
         "ergebnis/composer-normalize": "^2.42"

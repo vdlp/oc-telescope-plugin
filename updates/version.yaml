@@ -3,3 +3,6 @@ v1.0.1: "Override Telescope HomeController to fix publish check"
 v1.0.2: "Fix route registration"
 v1.0.3: "Fix mismatching PHP constraint with laravel/telescope"
 v2.0.0: "Add support for Laravel 9 and Telescope 4"
+v3.0.0:
+  - "Drop support for Laravel 9 and Telescope 4"
+  - "Add support for Laravel 12 and Telescope 5"
