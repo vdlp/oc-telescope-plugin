@@ -38,8 +38,6 @@ final class TelescopeServiceProvider extends TelescopeServiceProviderBase
 
         Telescope::start($this->app);
         Telescope::listenForStorageOpportunities($this->app);
-
-        $this->loadViewsFrom(plugins_path('vdlp/telescope/views'), 'telescope');
     }
 
     /**
