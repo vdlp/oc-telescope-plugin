@@ -35,13 +35,16 @@ Make sure that you're not autodiscovering the `laravel/telescope` package in you
 }
 ```
     
-### Database
-
-Run database migrations (when using database driver = default):
+Run the `install` command to install the Telescope assets:
+- This will publish the Telescope configuration `config/telescope.php` file 
+- This will publish the Telescope migrations `database/migrations/` files
 
 ```shell
-php artisan vendor:publish --tag telescope-migrations
+php artisan telescope:install
 ```
+
+### Database
+Update the migrations:
 
 ```shell
 php artisan october:migrate
@@ -51,14 +54,6 @@ php artisan migrate
 ## Environment
 
 Make sure your environment is set to `local`.
-
-## Configuration
-
-Create configuration file in `config/telescope.php`:
-
-```shell
-php artisan vendor:publish --tag telescope-config
-```
 
 ## Permissions
 
