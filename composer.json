@@ -3,6 +3,7 @@
     "description": "Laravel Telescope integration for October CMS",
     "license": "proprietary",
     "type": "october-plugin",
+    "abandoned": true,
     "authors": [
         {
             "name": "Van der Let & Partners",
